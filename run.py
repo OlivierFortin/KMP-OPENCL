@@ -3,9 +3,22 @@
 
 import numpy as np
 import pyopencl as cl
+import csv
 
-a_np = np.random.rand(50000).astype(np.float32)
-b_np = np.random.rand(50000).astype(np.float32)
+a_np = np.random.rand(50).astype(np.float32)
+b_np = np.random.rand(50).astype(np.float32)
+
+opencl_apps = open('opencl/basicTest.cl', 'r').read()
+
+# load all csv file
+#StatesTab.csv
+states_file = open('Data/Data1/StatesTab.csv')
+state_csv = csv.reader(states_file)
+
+# for row in state_csv:
+#   print state_csv
+#   
+
 
 ctx = cl.create_some_context()
 queue = cl.CommandQueue(ctx)
@@ -14,12 +27,8 @@ mf = cl.mem_flags
 a_g = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=a_np)
 b_g = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=b_np)
 
-prg = cl.Program(ctx, """
-__kernel void sum(__global const float *a_g, __global const float *b_g, __global float *res_g) {
-  int gid = get_global_id(0);
-  res_g[gid] = a_g[gid] + b_g[gid];
-}
-""").build()
+
+prg = cl.Program(ctx, opencl_apps).build()
 
 res_g = cl.Buffer(ctx, mf.WRITE_ONLY, a_np.nbytes)
 prg.sum(queue, a_np.shape, None, a_g, b_g, res_g)
