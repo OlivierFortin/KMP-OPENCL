@@ -10,20 +10,12 @@ __kernel void CheckMatch(int AlphabetSize,
 						 int inputL, 
 						__global int *h_input,
 						__global int *h_automate){
-	 
-	//const
-	int currentState = 0;
-	int nextState = 0;
-	int id = get_global_id(0);
-	int currentPosition = 0;
-	__local int local_input [128];
-	int i = 0;
-
-	 	
-	while((i< inputL) && (nextState>= 0)){
-		currentPosition = (id)*inputL+i;
-		nextState = h_automate[currentPosition];
-		printf("Device ID : %d , position : %d, value : %d \n", id,currentPosition,h_automate[currentPosition]);
-		++i;
-	}
+	 int m = 0;//position in input
+	 int i = 0;//position in automate
+	 while (m+i < length(h_input)) {
+	 	if(h_automate[i] == S[m+i]) {
+	 		if i = length(h_automate) - 1 
+	 			return m;
+	 	}
+	 }
 }
