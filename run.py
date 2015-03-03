@@ -11,7 +11,7 @@ import pyopencl.array as pycl_array
 # Modify to use np array
 def partial(W):
 	
-	T = np.random.rand(len(W)).astype(np.int32)
+	T = np.zeros(len(W)).astype(np.int32)
 	T[0] = -1
 	T[1] = 0
 	pos = 2
@@ -19,14 +19,14 @@ def partial(W):
 
 	while (pos < len(W)):
 		if W[pos-1] == W[cnd]:
-			cnd = cnd+1
+			cnd +=1
 			T[pos] = cnd
-			pos = pos +1
+			pos += 1
 		elif cnd > 0:
 			cnd = T[cnd]
 		else:
 			T[pos] = 0
-			pos = pos +1
+			pos += 1
 	return T
 
 a_np = np.random.rand(50).astype(np.float32)
@@ -59,14 +59,15 @@ mf = cl.mem_flags
 res_input = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=input_csv)
 res_automate = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=states_automate_csv)
 res_failure_table = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=failureTable)
+pattern_found = cl.Buffer(ctx, mf.READ_ONLY | mf.COPY_HOST_PTR, hostbuf=np.int32(0))
 
-
-nb_process = 16
-
+nb_process = 4
+from time import time
 prg = cl.Program(ctx, opencl_apps).build()
-prg.find_pattern(queue, (nb_process,), None, np.int32(72), np.int32(len(input_csv)/nb_process),np.int32(len(input_csv)),np.int32(len(states_automate_csv)), res_input, res_automate, res_failure_table)
-
-
+t_start = time()
+prg.find_pattern(queue, (nb_process,), None, np.int32(len(input_csv)/nb_process),np.int32(len(input_csv)),np.int32(len(states_automate_csv)), res_input, res_automate, res_failure_table,pattern_found)
+t_end = time()
+print 'Take : %f' %(t_end-t_start)
 
 
 
