@@ -21,21 +21,35 @@ using std::ifstream;
 
 int main(void) {
 
-    ifstream in;
+    ifstream inputFile, automateFile;
     
     std::string readLine;
 
     //Read input File
     std::vector<int> input;
-    in.open("Data/Data2/inputFile.csv");
-    while(!in.eof()) {
+    inputFile.open("Data/Data2/inputFile.csv");
+    while(!inputFile.eof()) {
         int value;
         char delimeter;
-        in >> value;
-        in >> delimeter;
+        inputFile >> value;
+        inputFile >> delimeter;
         input.push_back(value);
         cout << value;      
     }
+    inputFile.close();
+
+    //Read Automate File
+    std::vector<int> automate;
+    automateFile.open("Data/Data2/Automate.csv");
+    while(!automateFile.eof()) {
+        int value;
+        char delimeter;
+        automateFile >> value;
+        automateFile >> delimeter;
+        File.push_back(value);
+        cout << value;      
+    }
+    automateFile.close();
     
     //Load the OpenCl file
 	
