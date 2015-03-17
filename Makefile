@@ -1,5 +1,5 @@
 OS := $(shell uname)
-OPTIONS:= 
+OPTIONS:= -Wmultichar
 
 ifeq ($(OS),Darwin)
 	OPTIONS += -framework OpenCL

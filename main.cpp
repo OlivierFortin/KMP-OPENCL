@@ -2,8 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include <fstream>
-#include <sstream>
-#include <boost/algorithm/string.hpp>
+#include <iostream>
+#include <sstream>  
+#include <vector>
+#include <string>
+using std::cout;
+using std::endl;
+using std::ifstream;
+
+
 
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
@@ -13,11 +20,23 @@
 #define MAX_SOURCE_SIZE (0x100000)
 
 int main(void) {
-	FILE *fp;
-	char *source_str;
-    size_t source_size;
 
+    ifstream in;
+    
+    std::string readLine;
 
+    //Read input File
+    std::vector<int> input;
+    in.open("Data/Data2/inputFile.csv");
+    while(!in.eof()) {
+        int value;
+        char delimeter;
+        in >> value;
+        in >> delimeter;
+        input.push_back(value);
+        cout << value;      
+    }
+    
     //Load the OpenCl file
 	
 
