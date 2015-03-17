@@ -34,7 +34,7 @@ int main(void) {
         inputFile >> value;
         inputFile >> delimeter;
         input.push_back(value);
-        cout << value;      
+             
     }
     inputFile.close();
 
@@ -46,7 +46,7 @@ int main(void) {
         char delimeter;
         automateFile >> value;
         automateFile >> delimeter;
-        File.push_back(value);
+        automate.push_back(value);
         cout << value;      
     }
     automateFile.close();
