@@ -32,7 +32,7 @@ def partial(W):
 a_np = np.random.rand(50).astype(np.float32)
 b_np = np.random.rand(50).astype(np.float32)
 
-opencl_apps = open('opencl/basicTest.cl', 'r').read()
+opencl_apps = open('opencl/base.cl', 'r').read()
 
 # load all csv file
 # input_csv
