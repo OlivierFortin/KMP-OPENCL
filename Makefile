@@ -7,8 +7,8 @@ else
 	OPTIONS += -l OpenCL
 endif
 
-main: main.c
-	gcc -Wall -g main.c -o ./bin/main $(OPTIONS)
+main: main.cpp
+	g++ -Wall -g main.cpp -o ./bin/main $(OPTIONS)
 
 clean:
 	rm -rf main

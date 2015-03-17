@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <fstream>
+#include <sstream>
+#include <boost/algorithm/string.hpp>
 
 #ifdef __APPLE__
 #include <OpenCL/opencl.h>
@@ -14,20 +18,8 @@ int main(void) {
     size_t source_size;
 
 
-    //LOAD CSV FILE
-    FILE *csvFile = fopen("opencl/data.csv", "r");
-
-
-
     //Load the OpenCl file
-	fp = fopen("opencl/base.cl", "r");
-	if (!fp) {
-        fprintf(stderr, "Failed to load kernel.\n");
-        exit(1);
-    }
-    source_str = (char*)malloc(MAX_SOURCE_SIZE);
-    source_size = fread( source_str, 1, MAX_SOURCE_SIZE, fp);
-    fclose( fp );
+	
 
     // Get platform and device information
     cl_platform_id platform_id = NULL;
