@@ -132,7 +132,7 @@ int main(void) {
         "                       __global int *h_input,"
         "                       __global int *h_automate,"
         "                       __global int *h_failureTable,"
-        "                       __global int pattern_found)\n"
+        "                       __global int *pattern_found)\n"
         "{\n"
         "   printf(\"test opencl \");\n"
         "   int gid = get_global_id(0);\n"
@@ -184,6 +184,8 @@ int main(void) {
     cout << "after create kernel\n";
     int ret;
     cl_int pattern_found = 1;
+    cl_mem pattern_found_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR
+        ,sizeof(int),&pattern_found,&err);
     cl_int lengthByThread = (input.size()/1);
     cl_int input_sz = input.size()/1;
     cl_int automate_sz  = automate.size()/1;
@@ -200,7 +202,7 @@ int main(void) {
     cout << "after set 5args\n";
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     cout << "after set 6args\n";
-    ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
+    ret = clSetKernelArg(krn, 6, sizeof(cl_mem), (void *)&pattern_found_buf);
     cout << "after set args\n";
     size_t gtdsz[] = { 1 };
     size_t ltdsz[] = { 1 };
