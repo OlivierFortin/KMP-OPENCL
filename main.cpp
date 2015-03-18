@@ -69,12 +69,9 @@ int main(void) {
 
 
         cout << "test\n";
-    //Load opencl programme
-    ifstream sourceFile("opencl/base.cl");
-    string opencl_source (std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
 
 
-  int i,j;
+    int i,j;
    int err;
    char buffer[256];
 
@@ -91,7 +88,7 @@ int main(void) {
    clGetPlatformIDs( 0,0,&nplatforms);
    platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
    clGetPlatformIDs( nplatforms, platforms, 0);
-
+       cout <<nplatforms << "test\n";
    for(i=0; i<nplatforms; i++) {
       platform = platforms[i];
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
