@@ -97,10 +97,10 @@ int main(void) {
             (const char **)&source_str, (const size_t *)&source_size,&ret);
 
     ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
-    
+    cout << ret;
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
-    cout << ret;
+    
     // Set the arguments of the kernel
     // 
     // __global int *h_input,
