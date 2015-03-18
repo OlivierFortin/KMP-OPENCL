@@ -171,7 +171,7 @@ int main(void) {
         "}\n";
 
 
-
+    cout << "test\n";
    cl_mem input_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&input[0],&err);
    cl_mem automate_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&automate[0],&err);
    cl_mem failuretable_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,automate.size()*sizeof(int),&failureTable[0],&err);
