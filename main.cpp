@@ -121,7 +121,7 @@ int main(void) {
       (cl_context_properties)platform,
       (cl_context_properties)0
    };
-   cl_context ctx = clCreateContext(ctxprop,1,&dev,0,0,&err);
+   cl_context ctx = clCreateContext(NULL,1,&dev,NULL,NULL,&err);
    cout << "After context\n";
    //---------------------------------------------------------
    //Create a command queue
