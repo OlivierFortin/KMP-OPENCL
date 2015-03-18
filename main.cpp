@@ -80,7 +80,7 @@ int main(void) {
     cl_int ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
     ret = clGetDeviceIDs( platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, &ret_num_devices);
     // Create an OpenCL context
-    cl_context context = clCreateContext( NULL, 1, &device_id, NULL, NULL, &ret);
+    cl_context context = clCreateContext( NULL, 0, &device_id, NULL, NULL, &ret);
 
     // Create a command queue
     cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
@@ -95,6 +95,7 @@ int main(void) {
     size_t source_size = opencl_source.size()+1;
     cl_program program = clCreateProgramWithSource(context, 1, 
             (const char **)&source_str, (const size_t *)&source_size,&ret);
+    cout << CL_INVALID_CONTEXT << '-' << CL_OUT_OF_HOST_MEMORY << '\n';
     cout << ret;
     ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
     
