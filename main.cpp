@@ -118,7 +118,7 @@ int main(void) {
     cl_context context = clCreateContext(ctxprop,1,&dev,0,0,&err);
 
     // Create a command queue
-    cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
+    cl_command_queue command_queue = clCreateCommandQueue(context,dev,0,&err);
 
 
     cl_mem d_C = clCreateBuffer(context, CL_MEM_WRITE_ONLY, input.size(), NULL, &ret);
