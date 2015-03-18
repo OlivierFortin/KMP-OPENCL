@@ -92,12 +92,30 @@ int main(void) {
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
       if (!strcmp(buffer,"coprthr")) break;
     }
+
+
+    cl_uint ndevices;
+       cl_device_id* devices;
+       cl_device_id dev;
+
+       clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
+       devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
+       clGetDeviceIDs(platform, DEVICE_TYPE,ndevices,devices,0);
+
+       if (ndevices) dev = devices[0];
+       else exit(1);
+
+
     cout << nplatforms << "()"<< i <<"test\n";
-   if (i<nplatforms) platform = platforms[i];
-   else exit(1);
+
 
     // Create an OpenCL context
-    cl_context context = clCreateContext( NULL, 0, &device_id, NULL, NULL, &ret);
+    cl_context_properties ctxprop[3] = {
+      (cl_context_properties)CL_CONTEXT_PLATFORM,
+      (cl_context_properties)platform,
+      (cl_context_properties)0
+    };
+    cl_context context = clCreateContext(ctxprop,1,&dev,0,0,&err);
 
     // Create a command queue
     cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
