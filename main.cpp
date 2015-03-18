@@ -122,12 +122,12 @@ int main(void) {
       (cl_context_properties)0
    };
    cl_context ctx = clCreateContext(ctxprop,1,&dev,0,0,&err);
-
+   cout << "After context\n";
    //---------------------------------------------------------
    //Create a command queue
    //---------------------------------------------------------    
    cl_command_queue cmdq = clCreateCommandQueue(ctx,dev,0,&err);
-
+   cout << "After command queue\n";
    //---------------------------------------------------------
    //The kernel
    //---------------------------------------------------------   
@@ -168,11 +168,11 @@ int main(void) {
         "}\n";
 
 
-   
+   cout << "before buffer\n";
    cl_mem input_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&input[0],&err);
    cl_mem automate_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&automate[0],&err);
    cl_mem failuretable_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,automate.size()*sizeof(int),&failureTable[0],&err);
-
+   cout << "After buffer\n";
    //---------------------------------------------------------
    //Compiling the kernel
    //---------------------------------------------------------   
