@@ -93,7 +93,7 @@ int main(void) {
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
       if (!strcmp(buffer,"coprthr")) break;
     }
-
+    cout << nplatforms <<"test\n";
    if (i<nplatforms) platform = platforms[i];
    else exit(1);
 
@@ -128,7 +128,7 @@ int main(void) {
     // __global int *pattern_found){
     int patternFound = 0;
     
-    cout << "test\n";
+
     ret = clSetKernelArg(kernel, 0, sizeof(int), (void *)input.size());
     
     ret = clSetKernelArg(kernel, 1, sizeof(int), (void *)input.size());
