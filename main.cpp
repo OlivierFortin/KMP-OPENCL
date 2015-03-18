@@ -134,7 +134,6 @@ int main(void) {
         "                       __global int *h_failureTable,"
         "                       __global int *pattern_found)\n"
         "{\n"
-        "   printf(\"test opencl \");\n"
         "   int gid = get_global_id(0);\n"
         "   int m = gid*inputL;//position in input\n"
         "   int i = 0;//position in automate\n"
@@ -183,7 +182,7 @@ int main(void) {
     cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
     cout << "after create kernel\n";
     int ret;
-    cl_int pattern_found = 1;
+    cl_int pattern_found = 0;
     cl_mem pattern_found_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR
         ,sizeof(int),&pattern_found,&err);
     cl_int lengthByThread = (input.size()/1);
