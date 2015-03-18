@@ -68,7 +68,7 @@ int main(void) {
     failureTableFile.close();
 
 
-    
+        cout << "test\n";
     //Load opencl programme
     ifstream sourceFile("opencl/base.cl");
     string opencl_source (std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
@@ -186,7 +186,7 @@ int main(void) {
         &src_sz,&err);
 
     clBuildProgram(prg,1,&dev,0,0,0);
-     cout << "test\n";
+ 
     cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
 
     int ret;
