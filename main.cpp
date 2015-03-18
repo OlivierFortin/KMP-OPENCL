@@ -105,9 +105,9 @@ int main(void) {
    cl_device_id* devices;
    cl_device_id dev;
    cl_uint ret_num_devices;
-   clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,&dev, &ret_num_devices);
+   clGetDeviceIDs(platform, CL_DEVICE_TYPE_ALL,1,&dev, &ret_num_devices);
 
-
+    cout << "Nb device" << ret_num_devices << "\n";
     cout<< dev << "After device\n";
 
 
