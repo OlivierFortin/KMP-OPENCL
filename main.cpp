@@ -14,6 +14,8 @@ using std::endl;
 using std::ifstream;
 using std::string;
 using std::vector;
+#define DEVICE_TYPE CL_DEVICE_TYPE_ACCELERATOR
+
 
 #ifdef __APPLE__
 #include "opencl.hpp"
