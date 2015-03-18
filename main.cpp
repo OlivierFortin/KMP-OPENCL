@@ -126,9 +126,9 @@ int main(void) {
    //The kernel
    //---------------------------------------------------------   
    const char kernel_code[] = 
-      "__kernel void find_pattern(int inputL,"
-        "                        int  h_input_length,"
-        "                        int h_automate_length,"
+      "__kernel void find_pattern(__global int inputL,"
+        "                         __global int  h_input_length,"
+        "                         __global int h_automate_length,"
         "                       __global int *h_input,"
         "                       __global int *h_automate,"
         "                       __global int *h_failureTable,"
