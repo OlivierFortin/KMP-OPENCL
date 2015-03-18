@@ -1,3 +1,6 @@
+/****
+* Follow this code : http://www.thebigblob.com/using-the-cpp-bindings-for-opencl/
+* */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,7 +22,6 @@ using std::vector;
 #endif
 #define MAX_SOURCE_SIZE (0x100000)
 
-using namespace cl;
 int main(void) {
 
     ifstream inputFile, automateFile, failureTableFile;
@@ -68,10 +70,6 @@ int main(void) {
     string opencl_source (std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
 
 
-    //Load the OpenCl file
-	//get all platforms (drivers)
-    
-
     // Get platform and device information
     cl_platform_id platform_id = NULL;
     cl_device_id device_id = NULL;   
@@ -79,8 +77,22 @@ int main(void) {
     cl_uint ret_num_platforms;
     cl_int ret = clGetPlatformIDs(1, &platform_id, &ret_num_platforms);
     ret = clGetDeviceIDs( platform_id, CL_DEVICE_TYPE_DEFAULT, 1, &device_id, &ret_num_devices);
-
-
     // Create an OpenCL context
     cl_context context = clCreateContext( NULL, 1, &device_id, NULL, NULL, &ret);
+
+    // Create a command queue
+    cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
+
+    // Create a program from the kernel source
+    cl_program program = clCreateProgramWithSource(context, 1, 
+            (const char **)opencl_source.c_str(), (const size_t *)opencl_source.length()+1,&ret);
+
+    // Create the OpenCL kernel
+    cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
+
+    // Execute the OpenCL kernel on the list
+    size_t global_item_size = 1024; // Process the entire lists
+    size_t local_item_size = 32; // Process in groups of 64
+    clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, 
+            &global_item_size, &local_item_size, 0, NULL, NULL);
 }
