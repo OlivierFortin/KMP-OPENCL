@@ -110,9 +110,9 @@ int main(void) {
    cl_uint ret_num_devices;
    clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
    devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
-   clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,devices, &ret_num_devices);
+   clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,&dev, &ret_num_devices);
 
-   dev = devices[0];
+
    
 
 
