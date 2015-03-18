@@ -90,6 +90,23 @@ int main(void) {
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
 
+    // Set the arguments of the kernel
+    // 
+    // __global int *h_input,
+    // __global int *h_automate,
+    // __global int *h_failureTable,
+    // __global int *pattern_found){
+    int patternFound = 0;
+    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)input.size());
+    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)input.size());
+    ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)automate.size());
+    ret = clSetKernelArg(kernel, 3, sizeof(cl_mem), (void *)&input[0]);
+    ret = clSetKernelArg(kernel, 4, sizeof(cl_mem), (void *)&automate[0]);
+    ret = clSetKernelArg(kernel, 5, sizeof(cl_mem), (void *)&failureTable[0]);
+    ret = clSetKernelArg(kernel, 6, sizeof(cl_mem), (void *)&patternFound);
+    // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&d_StatesTab);
+    // ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&d_C);
+
     // Execute the OpenCL kernel on the list
     size_t global_item_size = 1024; // Process the entire lists
     size_t local_item_size = 32; // Process in groups of 64
