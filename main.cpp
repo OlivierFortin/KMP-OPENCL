@@ -92,7 +92,7 @@ int main(void) {
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
       if (!strcmp(buffer,"coprthr")) break;
     }
-    cout << nplatforms <<"test\n";
+    cout << nplatforms << "()"<< i <<"test\n";
    if (i<nplatforms) platform = platforms[i];
    else exit(1);
 
