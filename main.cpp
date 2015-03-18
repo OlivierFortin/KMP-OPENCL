@@ -108,7 +108,7 @@ int main(void) {
    clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,&dev, &ret_num_devices);
 
 
-    cout << "After device\n";
+    cout<< dev << "After device\n";
 
 
    //---------------------------------------------------------
