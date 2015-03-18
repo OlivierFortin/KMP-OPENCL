@@ -152,7 +152,7 @@ int main(void) {
         "       if(h_automate[i] == h_input[m+i]) {"
         "           if (i == h_automate_length - 1 ) {"
         "               *pattern_found = 1;"
-        "               printf(\"Found pattern at index %d \n\", m);"
+        "               printf(\"Found pattern at index %d \\n\", m);"
         "               return;"
         "           }"
         "           ++i;"
