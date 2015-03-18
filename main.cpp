@@ -184,21 +184,24 @@ int main(void) {
     cout << "after create kernel\n";
     int ret;
     int pattern_found = 1;
-
-    ret = clSetKernelArg(krn, 0, sizeof(int), (void *)(input.size()/300));
-    ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
-    ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
+    cl_int lengthByThread = (input.size()/1);
+    cl_int input_sz = input.size();
+    cl_int automate_sz  = automate.size();
+    ret = clSetKernelArg(krn, 0, sizeof(cl_int), (void *)&lengthByThread);
+    cout << "after set args 1\n";
+    ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)&input_sz);
+    ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)&automate_sz);
     ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input_buf);
     ret = clSetKernelArg(krn, 4, sizeof(cl_mem), (void *)&automate_buf);
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
-
+    cout << "after set args\n";
     size_t gtdsz[] = { 1 };
     size_t ltdsz[] = { 1 };
     cl_event ev[10];
 
     clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,NULL,NULL);
-
+    cout << "after run\n";
 
 
 }
