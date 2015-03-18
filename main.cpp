@@ -15,7 +15,7 @@ using std::vector;
 #ifdef __APPLE__
 #include "opencl.hpp"
 #else
-#include <CL/cl.hpp>
+#include "opencl.hpp"
 #endif
 #define MAX_SOURCE_SIZE (0x100000)
 
