@@ -9,6 +9,7 @@ __kernel void find_pattern(int inputL,
 	int m = gid*inputL;//position in input
 	int i = 0;//position in automate
 	int counter = 0;
+	printf("Before while \n");
 	 while (*pattern_found != 1 & counter < inputL+h_automate_length  & m+i < h_input_length) {
 	 	if(h_automate[i] == h_input[m+i]) {
 	 		if (i == h_automate_length - 1 ) {
