@@ -107,10 +107,10 @@ int main(void) {
    cl_uint ndevices;
    cl_device_id* devices;
    cl_device_id dev;
-
+   cl_uint ret_num_devices;
    clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
    devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
-   clGetDeviceIDs(platform, DEVICE_TYPE,ndevices,devices,0);
+   clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,devices, &ret_num_devices);
 
    dev = devices[0];
    
@@ -171,7 +171,7 @@ int main(void) {
         "}\n";
 
 
-    cout << "test\n";
+   
    cl_mem input_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&input[0],&err);
    cl_mem automate_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&automate[0],&err);
    cl_mem failuretable_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,automate.size()*sizeof(int),&failureTable[0],&err);
@@ -186,7 +186,7 @@ int main(void) {
         &src_sz,&err);
 
     clBuildProgram(prg,1,&dev,0,0,0);
-
+     cout << "test\n";
     cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
 
     int ret;
