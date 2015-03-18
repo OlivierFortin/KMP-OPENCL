@@ -172,14 +172,16 @@ int main(void) {
    //---------------------------------------------------------   
    const char* src[1] = { kernel_code };
    size_t src_sz = sizeof(kernel_code);
-
+   cout << "Before create program\n";
    cl_program prg = clCreateProgramWithSource(ctx,1,(const char**)&src,
         &src_sz,&err);
+    cout << "after create program\n";
+
 
     clBuildProgram(prg,1,&dev,0,0,0);
- 
+    cout << "after build program\n";
     cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
-
+    cout << "after create kernel\n";
     int ret;
     int pattern_found = 1;
 
