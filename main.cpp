@@ -105,8 +105,6 @@ int main(void) {
    cl_device_id* devices;
    cl_device_id dev;
    cl_uint ret_num_devices;
-   clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
-   devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
    clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,&dev, &ret_num_devices);
 
 
@@ -116,11 +114,7 @@ int main(void) {
    //---------------------------------------------------------
    //Create a context
    //---------------------------------------------------------    
-   cl_context_properties ctxprop[3] = {
-      (cl_context_properties)CL_CONTEXT_PLATFORM,
-      (cl_context_properties)platform,
-      (cl_context_properties)0
-   };
+  
    cl_context ctx = clCreateContext(NULL,1,&dev,NULL,NULL,&err);
    cout << "After context\n";
    //---------------------------------------------------------
