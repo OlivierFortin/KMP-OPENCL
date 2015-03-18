@@ -183,10 +183,10 @@ int main(void) {
     cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
     cout << "after create kernel\n";
     int ret;
-    int pattern_found = 1;
-    int lengthByThread = (input.size()/1);
-    int input_sz = input.size();
-    int automate_sz  = automate.size();
+    cl_int pattern_found = 1;
+    cl_int lengthByThread = (input.size()/1);
+    cl_int input_sz = input.size()/1;
+    cl_int automate_sz  = automate.size()/1;
 
     ret = clSetKernelArg(krn, 0, sizeof(cl_int), (void *)&lengthByThread);
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)&input_sz);
