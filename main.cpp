@@ -65,6 +65,8 @@ int main(void) {
     }
     failureTableFile.close();
 
+
+    
     //Load opencl programme
     ifstream sourceFile("opencl/base.cl");
     string opencl_source (std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
@@ -83,13 +85,23 @@ int main(void) {
     // Create a command queue
     cl_command_queue command_queue = clCreateCommandQueue(context, device_id, 0, &ret);
 
-    // Create a program from the kernel source
-    cl_program program = clCreateProgramWithSource(context, 1, 
-            (const char **)opencl_source.c_str(), (const size_t *)opencl_source.length()+1,&ret);
 
+    cl_mem d_C = clCreateBuffer(context, CL_MEM_WRITE_ONLY, input.size(), NULL, &ret);
+
+
+    // Create a program from the kernel source
+    // 
+    const char *source_str = opencl_source.c_str();
+    size_t source_size = opencl_source.size()+1;
+    cl_program program = clCreateProgramWithSource(context, 1, 
+            (const char **)&source_str, (const size_t *)&source_size,&ret);
+
+    ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+    
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
-
+    cout << ret;
+    cout << (kernel == NULL);
     // Set the arguments of the kernel
     // 
     // __global int *h_input,
@@ -97,13 +109,18 @@ int main(void) {
     // __global int *h_failureTable,
     // __global int *pattern_found){
     int patternFound = 0;
-    ret = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)input.size());
-    ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)input.size());
-    ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)automate.size());
+    
+    cout << "test\n";
+    ret = clSetKernelArg(kernel, 0, sizeof(int), (void *)input.size());
+    
+    ret = clSetKernelArg(kernel, 1, sizeof(int), (void *)input.size());
+    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)automate.size());
     ret = clSetKernelArg(kernel, 3, sizeof(cl_mem), (void *)&input[0]);
     ret = clSetKernelArg(kernel, 4, sizeof(cl_mem), (void *)&automate[0]);
     ret = clSetKernelArg(kernel, 5, sizeof(cl_mem), (void *)&failureTable[0]);
     ret = clSetKernelArg(kernel, 6, sizeof(cl_mem), (void *)&patternFound);
+
+
     // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&d_StatesTab);
     // ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&d_C);
 
