@@ -79,9 +79,19 @@ int main(void) {
     cl_device_id device_id = NULL;   
     cl_uint ret_num_devices;
     cl_uint ret_num_platforms;
+
     cl_int ret = clGetPlatformIDs( 0,0,&nplatforms);
     platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
     clGetPlatformIDs( nplatforms, platforms, 0);
+
+    for(i=0; i<nplatforms; i++) {
+      platform = platforms[i];
+      clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
+      if (!strcmp(buffer,"coprthr")) break;
+    }
+
+   if (i<nplatforms) platform = platforms[i];
+   else exit(1);
 
     // Create an OpenCL context
     cl_context context = clCreateContext( NULL, 0, &device_id, NULL, NULL, &ret);
