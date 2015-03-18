@@ -100,7 +100,7 @@ int main(void) {
     
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
-    cout << (kernel == NULL);
+    cout << ret;
     // Set the arguments of the kernel
     // 
     // __global int *h_input,
