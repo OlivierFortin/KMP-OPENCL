@@ -192,7 +192,7 @@ int main(void) {
     int ret;
     int pattern_found = 1;
 
-    ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size());
+    ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size()/32);
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
     ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input_buf);
