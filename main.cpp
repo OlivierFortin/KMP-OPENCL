@@ -80,6 +80,8 @@ int main(void) {
     cl_uint ret_num_devices;
     cl_uint ret_num_platforms;
     char buffer[256];
+    int i,j;
+    int err;
 
     cl_int ret = clGetPlatformIDs( 0,0,&nplatforms);
     platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
