@@ -200,8 +200,8 @@ int main(void) {
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
 
-    size_t gtdsz[] = { n };
-    size_t ltdsz[] = { 16 };
+    size_t gtdsz[] = { 1 };
+    size_t ltdsz[] = { 1 };
     cl_event ev[10];
     clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
 
