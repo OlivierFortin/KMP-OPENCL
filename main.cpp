@@ -74,93 +74,108 @@ int main(void) {
     string opencl_source (std::istreambuf_iterator<char>(sourceFile),(std::istreambuf_iterator<char>()));
 
 
-    // Get platform and device information
-    cl_uint nplatforms;
-    cl_platform_id* platforms;
-    cl_platform_id platform;
-    cl_device_id device_id = NULL;   
-    cl_uint ret_num_devices;
-    cl_uint ret_num_platforms;
-    char buffer[256];
-    int i,j;
-    int err;
+  int i,j;
+   int err;
+   char buffer[256];
 
-    cl_int ret = clGetPlatformIDs( 0,0,&nplatforms);
-    platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
-    clGetPlatformIDs( nplatforms, platforms, 0);
+   unsigned int n = 1024;
 
-    for(i=0; i<nplatforms; i++) {
+   cl_uint nplatforms;
+   cl_platform_id* platforms;
+   cl_platform_id platform;
+   //---------------------------------------------------------
+   //Discover and initialize the platform
+   //--------------------------------------------------------- 
+   clGetPlatformIDs( 0,0,&nplatforms);
+   platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
+   clGetPlatformIDs( nplatforms, platforms, 0);
+
+   for(i=0; i<nplatforms; i++) {
       platform = platforms[i];
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
+      cout << buffer;
       if (!strcmp(buffer,"coprthr")) break;
-    }
+   }
+
+   if (i<nplatforms) platform = platforms[i];
+   else platform = platforms[0];
+   //---------------------------------------------------------
+   //Discover and initialize the devices 
+   //--------------------------------------------------------- 
+   cl_uint ndevices;
+   cl_device_id* devices;
+   cl_device_id dev;
+
+   clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
+   devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
+   clGetDeviceIDs(platform, DEVICE_TYPE,ndevices,devices,0);
+
+   dev = devices[0];
+   
 
 
-    cl_uint ndevices;
-    cl_device_id* devices;
-    cl_device_id dev;
-
-    clGetDeviceIDs(platform,DEVICE_TYPE,0,0,&ndevices);
-    devices = (cl_device_id*)malloc(ndevices*sizeof(cl_device_id));
-    clGetDeviceIDs(platform, DEVICE_TYPE,ndevices,devices,0);
-
-    if (ndevices) dev = devices[0];
-    else exit(1);
-
-
-    // Create an OpenCL context
-    cl_context_properties ctxprop[3] = {
+   //---------------------------------------------------------
+   //Create a context
+   //---------------------------------------------------------    
+   cl_context_properties ctxprop[3] = {
       (cl_context_properties)CL_CONTEXT_PLATFORM,
       (cl_context_properties)platform,
       (cl_context_properties)0
-    };
-    cl_context context = clCreateContext(ctxprop,1,&dev,0,0,&err);
+   };
+   cl_context ctx = clCreateContext(ctxprop,1,&dev,0,0,&err);
 
-    // Create a command queue
-    cl_command_queue command_queue = clCreateCommandQueue(context,dev,0,&err);
+   //---------------------------------------------------------
+   //Create a command queue
+   //---------------------------------------------------------    
+   cl_command_queue cmdq = clCreateCommandQueue(ctx,dev,0,&err);
+
+   //---------------------------------------------------------
+   //The kernel
+   //---------------------------------------------------------   
+   const char kernel_code[] = 
+      "__kernel void matvecmult_kern(\n"
+      "   uint n,__global float* a,__global float* b,__global float* c )\n"
+      "{\n"
+      "   int i = get_global_id(0);\n"
+      "   int j;\n"
+      "   float tmp = 0.0f;\n"
+      "   for(j=0;j<n;j++) tmp += a[i*n+j] * b[j];\n"
+      "   c[i] = a[i*n+i];\n"
+      "}\n";
 
 
-    cl_mem d_C = clCreateBuffer(context, CL_MEM_WRITE_ONLY, input.size(), NULL, &ret);
+   //---------------------------------------------------------
+   //Compiling the kernel
+   //---------------------------------------------------------   
+   const char* src[1] = { kernel_code };
+   size_t src_sz = sizeof(kernel_code);
 
+   cl_program prg = clCreateProgramWithSource(ctx,1,(const char**)&src,
+        &src_sz,&err);
 
-    // Create a program from the kernel source
-    // 
-    const char *source_str = opencl_source.c_str();
-    size_t source_size = opencl_source.size()+1;
-    cl_program program = clCreateProgramWithSource(context, 1, 
-            (const char **)&source_str, (const size_t *)&source_size,&ret);
-    cout << CL_INVALID_CONTEXT << '-' << CL_OUT_OF_HOST_MEMORY << '\n';
-    cout << ret;
-    ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+   clBuildProgram(prg,1,&dev,0,0,0);
+
+   cl_kernel krn = clCreateKernel(prg,"matvecmult_kern",&err);
+
+    int ret;
+    int pattern_found = 1;
+
+    ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size());
     
-    // Create the OpenCL kernel
-    cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
-    
-    // Set the arguments of the kernel
-    // 
-    // __global int *h_input,
-    // __global int *h_automate,
-    // __global int *h_failureTable,
-    // __global int *pattern_found){
-    int patternFound = 0;
-    
+    ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
+    ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
+    ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input[0]);
+    ret = clSetKernelArg(krn, 4, sizeof(cl_mem), (void *)&automate[0]);
+    ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failureTable[0]);
+    ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
 
-    ret = clSetKernelArg(kernel, 0, sizeof(int), (void *)input.size());
-    
-    ret = clSetKernelArg(kernel, 1, sizeof(int), (void *)input.size());
-    ret = clSetKernelArg(kernel, 2, sizeof(int), (void *)automate.size());
-    ret = clSetKernelArg(kernel, 3, sizeof(cl_mem), (void *)&input[0]);
-    ret = clSetKernelArg(kernel, 4, sizeof(cl_mem), (void *)&automate[0]);
-    ret = clSetKernelArg(kernel, 5, sizeof(cl_mem), (void *)&failureTable[0]);
-    ret = clSetKernelArg(kernel, 6, sizeof(cl_mem), (void *)&patternFound);
+    cout <<"test";
+    // // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&d_StatesTab);
+    // // ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&d_C);
 
-
-    // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&d_StatesTab);
-    // ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&d_C);
-
-    // Execute the OpenCL kernel on the list
-    size_t global_item_size = 1024; // Process the entire lists
-    size_t local_item_size = 32; // Process in groups of 64
-    clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, 
-            &global_item_size, &local_item_size, 0, NULL, NULL);
+    // // Execute the OpenCL kernel on the list
+    // size_t global_item_size = 1024; // Process the entire lists
+    // size_t local_item_size = 32; // Process in groups of 64
+    // clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, 
+    //         &global_item_size, &local_item_size, 0, NULL, NULL);
 }
