@@ -189,11 +189,17 @@ int main(void) {
     cl_int automate_sz  = automate.size()/1;
 
     ret = clSetKernelArg(krn, 0, sizeof(cl_int), (void *)&lengthByThread);
+    cout << "after set 1args\n";
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)&input_sz);
+    cout << "after set 2args\n";
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)&automate_sz);
+    cout << "after set 3args\n";
     ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input_buf);
+    cout << "after set 4args\n";
     ret = clSetKernelArg(krn, 4, sizeof(cl_mem), (void *)&automate_buf);
+    cout << "after set 5args\n";
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
+    cout << "after set 6args\n";
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
     cout << "after set args\n";
     size_t gtdsz[] = { 1 };
