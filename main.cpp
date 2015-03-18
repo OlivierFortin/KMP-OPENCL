@@ -199,13 +199,8 @@ int main(void) {
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
 
-
-    // // ret = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&d_StatesTab);
-    // // ret = clSetKernelArg(kernel, 2, sizeof(cl_mem), (void *)&d_C);
-
-    // // Execute the OpenCL kernel on the list
-    // size_t global_item_size = 1024; // Process the entire lists
-    // size_t local_item_size = 32; // Process in groups of 64
-    // clEnqueueNDRangeKernel(command_queue, kernel, 1, NULL, 
-    //         &global_item_size, &local_item_size, 0, NULL, NULL);
+   size_t gtdsz[] = { n };
+   size_t ltdsz[] = { 16 };
+   cl_event ev[10];
+   clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
 }
