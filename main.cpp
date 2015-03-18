@@ -170,6 +170,11 @@ int main(void) {
         "}\n";
 
 
+
+   cl_mem input_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&input[0],&err);
+   cl_mem automate_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,input.size()*sizeof(int),&automate[0],&err);
+   cl_mem failuretable_buf = clCreateBuffer(ctx,CL_MEM_USE_HOST_PTR,automate.size()*sizeof(int),&failureTable[0],&err);
+
    //---------------------------------------------------------
    //Compiling the kernel
    //---------------------------------------------------------   
@@ -187,12 +192,11 @@ int main(void) {
     int pattern_found = 1;
 
     ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size());
-    
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
-    ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input[0]);
-    ret = clSetKernelArg(krn, 4, sizeof(cl_mem), (void *)&automate[0]);
-    ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failureTable[0]);
+    ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input_buf);
+    ret = clSetKernelArg(krn, 4, sizeof(cl_mem), (void *)&automate_buf);
+    ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
 
 
