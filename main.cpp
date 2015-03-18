@@ -190,7 +190,7 @@ int main(void) {
 
     int ret;
     int pattern_found = 1;
-
+    cout <<"test\n";
     ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size());
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
@@ -199,8 +199,8 @@ int main(void) {
     ret = clSetKernelArg(krn, 5, sizeof(cl_mem), (void *)&failuretable_buf);
     ret = clSetKernelArg(krn, 6, sizeof(cl_int), (void *)&pattern_found);
 
-   size_t gtdsz[] = { n };
-   size_t ltdsz[] = { 16 };
-   cl_event ev[10];
-   clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
+    size_t gtdsz[] = { n };
+    size_t ltdsz[] = { 16 };
+    cl_event ev[10];
+    clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
 }
