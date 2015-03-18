@@ -203,7 +203,8 @@ int main(void) {
     size_t gtdsz[] = { 1 };
     size_t ltdsz[] = { 1 };
     cl_event ev[10];
-    clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
+
+    clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,NULL,NULL);
 
     err = clWaitForEvents(2,ev);
 
