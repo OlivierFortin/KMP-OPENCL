@@ -143,7 +143,7 @@ int main(void) {
         "                       __global int *h_failureTable,"
         "                       __global int *pattern_found)\n"
         "{\n"
-        "   rintf(\"test opencl \");\n"
+        "   printf(\"test opencl \");\n"
         "   int gid = get_global_id(0);\n"
         "   int m = gid*inputL;//position in input\n"
         "   int i = 0;//position in automate\n"
