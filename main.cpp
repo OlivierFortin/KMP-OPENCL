@@ -19,6 +19,7 @@ using std::vector;
 #include "opencl.hpp"
 #else
 #include "opencl.hpp"
+#include <CL/cl.h>
 #endif
 #define MAX_SOURCE_SIZE (0x100000)
 
