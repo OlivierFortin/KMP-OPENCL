@@ -45,7 +45,6 @@ int main()
    for(i=0; i<nplatforms; i++) {
       platform = platforms[i];
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
-      if (!strcmp(buffer,"coprthr")) break;
    }
 
    if (i<nplatforms) platform = platforms[i];
