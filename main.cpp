@@ -206,7 +206,6 @@ int main(void) {
 
     clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,NULL,NULL);
 
-    err = clWaitForEvents(2,ev);
 
 
 }
