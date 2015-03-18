@@ -14,7 +14,7 @@ using std::endl;
 using std::ifstream;
 using std::string;
 using std::vector;
-#define DEVICE_TYPE CL_DEVICE_TYPE_ACCELERATOR
+#define DEVICE_TYPE CL_DEVICE_TYPE_CPU
 
 
 #ifdef __APPLE__
@@ -147,12 +147,12 @@ int main(void) {
         "   int m = gid*inputL;//position in input"
         "   int i = 0;//position in automate"
         "   int counter = 0;"
-        "   printf(\"Before while \n\");"
+        "   printf(\"Before while \");"
         "    while (*pattern_found != 1 & counter < inputL+h_automate_length  & m+i < h_input_length) {"
         "       if(h_automate[i] == h_input[m+i]) {"
         "           if (i == h_automate_length - 1 ) {"
         "               *pattern_found = 1;"
-        "               printf(\"Found pattern at index %d \\n\", m);"
+        "               printf(\"Found pattern at index %d \", m);"
         "               return;"
         "           }"
         "           ++i;"
