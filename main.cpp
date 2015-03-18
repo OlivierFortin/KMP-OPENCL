@@ -132,7 +132,7 @@ int main(void) {
         "                       __global int *h_input,"
         "                       __global int *h_automate,"
         "                       __global int *h_failureTable,"
-        "                       __global int *pattern_found)\n"
+        "                       __global int pattern_found)\n"
         "{\n"
         "   printf(\"test opencl \");\n"
         "   int gid = get_global_id(0);\n"
