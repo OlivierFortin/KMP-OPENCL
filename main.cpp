@@ -184,11 +184,11 @@ int main(void) {
     cout << "after create kernel\n";
     int ret;
     int pattern_found = 1;
-    cl_int lengthByThread = (input.size()/1);
-    cl_int input_sz = input.size();
-    cl_int automate_sz  = automate.size();
+    int lengthByThread = (input.size()/1);
+    int input_sz = input.size();
+    int automate_sz  = automate.size();
+
     ret = clSetKernelArg(krn, 0, sizeof(cl_int), (void *)&lengthByThread);
-    cout << "after set args 1\n";
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)&input_sz);
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)&automate_sz);
     ret = clSetKernelArg(krn, 3, sizeof(cl_mem), (void *)&input_buf);
