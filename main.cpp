@@ -95,9 +95,9 @@ int main(void) {
     size_t source_size = opencl_source.size()+1;
     cl_program program = clCreateProgramWithSource(context, 1, 
             (const char **)&source_str, (const size_t *)&source_size,&ret);
-
-    ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
     cout << ret;
+    ret = clBuildProgram(program, 1, &device_id, NULL, NULL, NULL);
+    
     // Create the OpenCL kernel
     cl_kernel kernel = clCreateKernel(program, "find_pattern", &ret);
     
