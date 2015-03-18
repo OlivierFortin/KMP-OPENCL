@@ -47,8 +47,6 @@ int main()
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
    }
 
-   if (i<nplatforms) platform = platforms[i];
-   else exit(1);
    //---------------------------------------------------------
    //Discover and initialize the devices 
    //--------------------------------------------------------- 
