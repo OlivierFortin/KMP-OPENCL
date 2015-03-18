@@ -88,7 +88,7 @@ int main(void) {
    clGetPlatformIDs( 0,0,&nplatforms);
    platforms = (cl_platform_id*)malloc(nplatforms*sizeof(cl_platform_id));
    clGetPlatformIDs( nplatforms, platforms, 0);
-       cout <<nplatforms << "test\n";
+
    for(i=0; i<nplatforms; i++) {
       platform = platforms[i];
       clGetPlatformInfo(platforms[i],CL_PLATFORM_NAME,256,buffer,0);
@@ -110,7 +110,7 @@ int main(void) {
    clGetDeviceIDs(platform, CL_DEVICE_TYPE_DEFAULT,1,&dev, &ret_num_devices);
 
 
-   
+    cout << "After device\n";
 
 
    //---------------------------------------------------------
