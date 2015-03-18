@@ -143,6 +143,7 @@ int main(void) {
         "                       __global int *h_failureTable,"
         "                       __global int *pattern_found)\n"
         "{\n"
+        "   rintf(\"test opencl \");\n"
         "   int gid = get_global_id(0);\n"
         "   int m = gid*inputL;//position in input\n"
         "   int i = 0;//position in automate\n"
@@ -184,13 +185,13 @@ int main(void) {
    cl_program prg = clCreateProgramWithSource(ctx,1,(const char**)&src,
         &src_sz,&err);
 
-   clBuildProgram(prg,1,&dev,0,0,0);
+    clBuildProgram(prg,1,&dev,0,0,0);
 
-   cl_kernel krn = clCreateKernel(prg,"matvecmult_kern",&err);
+    cl_kernel krn = clCreateKernel(prg,"find_pattern",&err);
 
     int ret;
     int pattern_found = 1;
-    cout <<"test\n";
+
     ret = clSetKernelArg(krn, 0, sizeof(int), (void *)input.size());
     ret = clSetKernelArg(krn, 1, sizeof(cl_int), (void *)input.size());
     ret = clSetKernelArg(krn, 2, sizeof(cl_int), (void *)automate.size());
@@ -203,4 +204,8 @@ int main(void) {
     size_t ltdsz[] = { 16 };
     cl_event ev[10];
     clEnqueueNDRangeKernel(cmdq,krn,1,0,gtdsz,ltdsz,0,0,&ev[0]);
+
+    err = clWaitForEvents(2,ev);
+
+
 }
